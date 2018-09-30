@@ -2,13 +2,12 @@ package net.chemodurov.publicservices.model.rest;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
-import net.chemodurov.publicservices.model.StateService;
 
 import java.util.Date;
 
 @Data
 public class DataFromApplicationPage {
-    private StateService stateService;
+    private String id;
     private String surname;
     private String name;
     private String patronymic;

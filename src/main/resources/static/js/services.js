@@ -1,8 +1,17 @@
-function SendPost() {
-    //отправляю POST запрос и получаю ответ
-    $$a({
-        type: 'post',//тип запроса: get,post либо head
-        url: '/services/',//url адрес файла обработчика
-        response: 'text'//тип возвращаемого ответа text либо xml
-    });
-}
+$(document).ready(
+    function () {
+        $.ajax({
+            url:"http://localhost:8080/services/",
+            type:"GET",
+            success:function(msg){
+                window.data = msg;
+                var select = $("#services");
+                select.html("");
+                for (var a of msg) {
+                    select.append($("<option>").attr("value", a.id).text(a.name))
+                }
+            },
+            dataType:"json"
+        });
+    }
+);

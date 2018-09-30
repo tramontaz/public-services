@@ -29,78 +29,53 @@
             </div>
         </nav>
     </div>
+
     <div class="container">
-
-        <form>
-            <div class="form-row">
-                <div class="col-md-4 mb-3">
-                    <label for="inputState">Услуга</label>
-                    <select id="inputState" class="form-control">
-                        <option selected>Выберите услугу...</option>
-                        <option>...</option>
-                    </select>
+        <form method="post" action="" id="ajaxform"><br/>
+            <div class="form-group col-md-4">
+                <label for="services">Услуга</label>
+                <select id="services" class="form-control" name="id">
+                </select>
+            </div>
+            <div class="form-group">
+                <div class="col">
+                    <input type="text" name="surname" placeholder="Фамилия" val="" required> <br/>
                 </div>
             </div>
-
-            <div class="form-row">
-                <div class="col-md-4 mb-3">
-                    <label for="validationDefault01">Фамилия</label>
-                    <input type="text" class="form-control" id="validationDefault01" placeholder=""
-                           value="" required>
+            <div class="form-group">
+                <div class="col">
+                    <input type="text" name="name" placeholder="Имя" val="" required> <br/>
                 </div>
             </div>
-
-            <div class="form-row">
-                <div class="col-md-4 mb-3">
-                    <label for="validationDefault02">Имя</label>
-                    <input type="text" class="form-control" id="validationDefault02" placeholder="Last name"
-                           value="" required>
+            <div class="form-group">
+                <div class="col">
+                    <input type="text" name="patronymic" placeholder="Отчество" val=""> <br/>
                 </div>
             </div>
-
-            <div class="form-row">
-                <div class="col-md-4 mb-3">
-                    <label for="validationDefault03">Отчество</label>
-                    <input type="text" class="form-control" id="validationDefault03" placeholder="Last name"
-                           value="">
+            <div class="form-group">
+                <div class="col">
+                    <input type="email" name="email" placeholder="Вaш email" val=""> <br/>
                 </div>
             </div>
-
-            <div class="form-row">
-                <div class="col-md-4 mb-3">
-                    <label for="validationEmail">Email</label>
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text" id="inputGroupPrepend2">@</span>
-                        </div>
-                        <input type="text" class="form-control" id="validationEmail" placeholder="Username"
-                               aria-describedby="inputGroupPrepend2" required>
-                    </div>
+            <div class="form-group">
+                <div class="col">
+                    <input type="number" maxlength="11" minlength="11" name="phoneNumber" placeholder="Номер телефона"
+                           val="" required> <br/>
                 </div>
             </div>
-
-            <div class="form-row">
-                <div class="col-md-4 mb-3">
-                    <div class="form-group"> <!-- Date input -->
-                        <label class="control-label" for="date">Date</label>
-                        <input class="form-control" id="date" name="date" placeholder="dd/mm/yyyy" type="date"/>
-                    </div>
+            <div class="form-group">
+                <div class="col">
+                    <input type="date" name="dob" placeholder="Дата рождения" val="" required> <br/>
                 </div>
-
             </div>
-
-            <button class="btn btn-primary" id="application" type="submit">Подать заявку</button>
+            <button id="sendService" class="btn btn-primary">Подать заявку</button>
         </form>
-
-        <script src="js/validation.js"></script>
-        <script src="js/services.js"></script>
     </div>
 </div>
-
-<!-- Optional JavaScript -->
-<!-- jQuery first, then Popper.js, then Bootstrap JS -->
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+<!--Optional JavaScript-->
+<!--jQuery first, then Popper.js, then Bootstrap JS-->
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"
+        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
         crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
         integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
@@ -108,5 +83,7 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
         integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
         crossorigin="anonymous"></script>
+<script src="js/application.js"></script>
+<script src="js/services.js"></script>
 </body>
 </html>

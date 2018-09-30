@@ -36,32 +36,33 @@ public class AppPageService {
     public Map<String, String> validateAndSave(DataFromApplicationPage data) {
         Map<String, String> result = validate(data);
         if (result != null && VALIDATE_OK.equals(result.get("data"))) {
-           try {
-               Application application = new Application();
-               StateService stateService = stateServiceService.findServiceByName(result.get("stateService"));
-               Department department = departmentService.findDepartmentByCode(Integer.parseInt(result.get("department")));
-               Declarant declarant = Declarant.builder()
-                       .surname(result.get("surname"))
-                       .name(result.get("name"))
-                       .patronymic(result.get("patronymic"))
-                       .email(result.get("email"))
-                       .phoneNumber(Long.parseLong(result.get("phoneNumber")))
-                       .dob(new Date(Long.parseLong(result.get("dob")))).build();
-               application.setDate(new Date());
-               application.setStateService(stateService);
-               application.setDepartment(department);
-               application.setDeclarant(declarant);
-               applicationService.save(application);
-           } catch (Exception e) {
-               result.put("data", "error");
-           }
+            try {
+                Application application = new Application();
+                StateService stateService = stateServiceService.findById(result.get("stateService"));
+                Department department = departmentService.findDepartmentByCode(Integer.parseInt(result.get("department")));
+                Declarant declarant = Declarant.builder()
+                        .surname(result.get("surname"))
+                        .name(result.get("name"))
+                        .patronymic(result.get("patronymic"))
+                        .email(result.get("email"))
+                        .phoneNumber(Long.parseLong(result.get("phoneNumber")))
+                        .dob(new Date(Long.parseLong(result.get("dob")))).build();
+                application.setDate(new Date());
+                application.setStateService(stateService);
+                application.setDepartment(department);
+                application.setDeclarant(declarant);
+                applicationService.save(application);
+            } catch (Exception e) {
+                result.put("data", "error");
+            }
         } else {
             if (result == null) {
                 result = new HashMap<>();
                 result.put("data", "empty");
             }
         }
-            return result;
+        log.info("Result: {}", result);
+        return result;
     }
 
     public Map<String, Object> getAll() {
@@ -77,12 +78,15 @@ public class AppPageService {
 
     public Map<String, Object> getAllByPages(Map<String, Object> request) {
         Map<String, Object> result = new HashMap<>();
-        List<Application> applications = paginatedRepository.pageableRequest((int)request.get("start"), (int)request.get("length"));
+        long total = applicationService.getTotalrecordsCount();
+        List<Application> applications = paginatedRepository.pageableRequest(
+                (int) request.get("start"),
+                (int) request.get("length"));
         if (applications != null && applications.size() > 0) {
             result.put("data", mapApplicationToDataTable(applications));
             result.put("draw", request.get("draw"));
-            result.put("recordsTotal", applicationService.getTotalrecordsCount());
-            result.put("recordsFiltered", applications.size());
+            result.put("recordsTotal", total);
+            result.put("recordsFiltered", total);
         } else {
             result.put("error", "Не найдено ни одной заявки");
         }
@@ -116,13 +120,16 @@ public class AppPageService {
                 dataTable.setFio(String.valueOf(fio));
                 if (application.getDeclarant().getDob() != null)
                     dataTable.setDob(application.getDeclarant().getDob());
+                if (application.getDeclarant().getEmail() != null)
+                    dataTable.setEmail(application.getDeclarant().getEmail());
                 if (application.getDeclarant().getPhoneNumber() != null) {
                     dataTable.setPhoneNumber(application.getDeclarant().getPhoneNumber());
                 }
                 dataTable.setDate(application.getDate());
                 result.add(dataTable);
             }
-        } if (result.size() > 0) {
+        }
+        if (result.size() > 0) {
             return result;
         } else return null;
     }
@@ -135,19 +142,23 @@ public class AppPageService {
         } else
             result.put("data", "ok");
 
-        if (data.getStateService() == null){
+        if (data.getId() == null) {
             result.put("stateService", "empty");
             result.put("data", "error");
+        } else {
+            StateService stateService = stateServiceService.findById(data.getId());
+            if (stateService != null) {
+                result.put("stateService", data.getId());
+                result.put("department", String.valueOf(stateService.getDepCode()));
+            } else {
+                result.put("stateService", "empty");
+                result.put("data", "error");
+            }
         }
-        else
-            result.put("stateService", data.getStateService().getName());
-            result.put("department", String.valueOf(data.getStateService().getDepCode()));
-
         if (data.getSurname() == null) {
             result.put("surname", "empty");
             result.put("data", "error");
-        }
-        else if (data.getSurname().length() > 100) {
+        } else if (data.getSurname().length() > 100) {
             result.put("phoneNumber", "Слишком длинная фамилия!");
             result.put("data", "error");
         } else
@@ -155,11 +166,10 @@ public class AppPageService {
         if (data.getName() == null) {
             result.put("name", "empty");
             result.put("data", "error");
-        }
-        else if (data.getName().length() > 100) {
+        } else if (data.getName().length() > 100) {
             result.put("name", "Слишком длинное имя!");
             result.put("data", "error");
-        }else
+        } else
             result.put("name", data.getName());
         if (data.getPatronymic() != null && data.getPatronymic().length() > 100) {
             result.put("patronymic", "Слишком длинное отчество!");
@@ -167,15 +177,15 @@ public class AppPageService {
         } else if (data.getPatronymic() != null && data.getPatronymic().length() > 0) {
             result.put("patronymic", data.getPatronymic());
         }
-        if (data.getEmail() != null && !isValidEmail(data.getEmail())) {
+        if (data.getEmail() != null && data.getEmail().length() > 0 &&!isValidEmail(data.getEmail())) {
             result.put("email", "Проверьте формат email!");
             result.put("data", "error");
-        } else if (data.getPatronymic() != null && isValidEmail(data.getEmail())) {
+        } else if (data.getEmail() != null && isValidEmail(data.getEmail())) {
             result.put("email", data.getEmail());
         }
         if (data.getPhoneNumber() == null)
             result.put("phoneNumber", "empty");
-        else if (String.valueOf(Math.abs(data.getPhoneNumber())).length() != 11) {
+        else if (String.valueOf(data.getPhoneNumber()).length() > 0 && String.valueOf(data.getPhoneNumber()).length() != 11) {
             result.put("phoneNumber", "Телефон должен состоять из 11 цифр!");
             result.put("data", "error");
         } else
@@ -183,8 +193,7 @@ public class AppPageService {
         if (data.getDob() == null) {
             result.put("dob", "empty");
             result.put("data", "error");
-        }
-        else if ((data.getDob().getTime() + EIGHTEEN_YEARS_IN_MILSECS) > new Date().getTime()) {
+        } else if ((data.getDob().getTime() + EIGHTEEN_YEARS_IN_MILSECS) > new Date().getTime()) {
             result.put("dob", "Вы должны быть старше 18 лет!");
             result.put("data", "error");
         } else

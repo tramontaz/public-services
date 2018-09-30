@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class StateServiceService {
@@ -30,5 +31,10 @@ public class StateServiceService {
 
     public StateService findServiceByName(String name) {
         return repository.findByName(name);
+    }
+
+    public StateService findById(String id) {
+        Optional optional = repository.findById(id);
+        return (StateService) optional.get();
     }
 }

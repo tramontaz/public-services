@@ -1,14 +1,7 @@
-// $(document).ready(function() {
-//     $('#table').DataTable( {
-//         "processing": true,
-//         "serverSide": true,
-//         "ajax": "/applications/getAll"
-//     } );
-// } );
-
 $(document).ready( function () {
     var table = $('#table').DataTable({
         "serverSide": true,
+        "processing":true,
         "ajax": function (query, callback, setting) {
             $.ajax({
                 url: '/applications/getPages',

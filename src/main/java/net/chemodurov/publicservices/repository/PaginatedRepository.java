@@ -18,8 +18,8 @@ public class PaginatedRepository {
         this.repository = repository;
     }
 
-    public List<Application> pageableRequest(int from, int to) {
-        Pageable pageableRequest = new PageRequest(from, to);
+    public List<Application> pageableRequest(int start, int lenght) {
+        Pageable pageableRequest = new PageRequest(start/lenght, lenght);
         Page<Application> pages = repository.findAll(pageableRequest);
         return pages.getContent();
     }
