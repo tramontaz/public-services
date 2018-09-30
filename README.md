@@ -1,5 +1,5 @@
 # public-services
-Моё первое приложение, где я реализовывал frontend и backand.
+Моё первое приложение, где я реализовывал frontend и backend.
 
 Для заполнения базы данных можете использовать фаил fillDb.js в /public-services/src/main/resources/fillDb.js
 Если у Вас не установлена mongo или не хотите засорять свою базу, можете воспользоваться Docker. Для этого:
