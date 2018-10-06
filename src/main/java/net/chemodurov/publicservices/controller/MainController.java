@@ -1,7 +1,6 @@
 package net.chemodurov.publicservices.controller;
 
 import net.chemodurov.publicservices.model.rest.DataFromApplicationPage;
-import net.chemodurov.publicservices.model.rest.TestRest;
 import net.chemodurov.publicservices.service.AppPageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -49,17 +48,14 @@ public class MainController {
     @GetMapping("/getPages")
     public Map<String, Object> getAllByPages(@RequestParam("draw") int draw,
                                              @RequestParam("start") int start,
-                                             @RequestParam("length") int length) {
+                                             @RequestParam("length") int length,
+                                             @RequestParam("search[value]") String searchParam) {
         Map<String, Object> request = new HashMap<>();
         request.put("draw", draw);
         request.put("start", start);
         request.put("length", length);
+        request.put("searchParam", searchParam);
         return appPageService.getAllByPages(request);
-    }
-
-    @PostMapping("/test")
-    public void testFetch(@RequestBody DataFromApplicationPage o) {
-        System.out.println("Принято с фронта: " + o.toString());
     }
 
     private StringBuilder constructErrorMessage(@RequestBody DataFromApplicationPage data, Map<String, String> result) {

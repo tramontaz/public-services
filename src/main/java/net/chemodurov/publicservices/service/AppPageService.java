@@ -79,7 +79,8 @@ public class AppPageService {
     public Map<String, Object> getAllByPages(Map<String, Object> request) {
         Map<String, Object> result = new HashMap<>();
         long total = applicationService.getTotalrecordsCount();
-        List<Application> applications = paginatedRepository.pageableRequest(
+        List<Application> applications = paginatedRepository.paginatedSearchRequest(
+                (String) request.get("searchParam"),
                 (int) request.get("start"),
                 (int) request.get("length"));
         if (applications != null && applications.size() > 0) {
@@ -88,7 +89,10 @@ public class AppPageService {
             result.put("recordsTotal", total);
             result.put("recordsFiltered", total);
         } else {
-            result.put("error", "Не найдено ни одной заявки");
+            result.put("data", new ArrayList<>());
+            result.put("draw", request.get("draw"));
+            result.put("recordsTotal", total);
+            result.put("recordsFiltered", 0);
         }
         return result;
     }
