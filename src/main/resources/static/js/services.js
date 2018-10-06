@@ -1,7 +1,7 @@
 $(document).ready(
     function () {
         $.ajax({
-            url:"http://localhost:8080/services/",
+            url:"/services/",
             type:"GET",
             success:function(msg){
                 window.data = msg;
