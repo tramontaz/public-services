@@ -1,8 +1,8 @@
 package net.chemodurov.publicservices.controller;
 
+import lombok.RequiredArgsConstructor;
 import net.chemodurov.publicservices.model.rest.DataFromApplicationPage;
 import net.chemodurov.publicservices.service.AppPageService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -12,14 +12,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/applications")
 public class MainController {
     private final AppPageService appPageService;
-
-    @Autowired
-    public MainController(AppPageService appPageService) {
-        this.appPageService = appPageService;
-    }
 
     @GetMapping(value = "/")
     public String homepage(){

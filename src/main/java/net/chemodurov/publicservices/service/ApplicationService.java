@@ -1,24 +1,19 @@
 package net.chemodurov.publicservices.service;
 
+import lombok.RequiredArgsConstructor;
 import net.chemodurov.publicservices.model.Application;
 import net.chemodurov.publicservices.model.Department;
 import net.chemodurov.publicservices.repository.ApplicationRepository;
 import net.chemodurov.publicservices.repository.DepartmentRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class ApplicationService {
     private final ApplicationRepository applicationRepository;
     private final DepartmentRepository departmentRepository;
-
-    @Autowired
-    public ApplicationService(ApplicationRepository applicationRepository, DepartmentRepository departmentRepository) {
-        this.applicationRepository = applicationRepository;
-        this.departmentRepository = departmentRepository;
-    }
 
     public Long getTotalrecordsCount() {
         return applicationRepository.count();

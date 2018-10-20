@@ -1,20 +1,16 @@
 package net.chemodurov.publicservices.service;
 
+import lombok.RequiredArgsConstructor;
 import net.chemodurov.publicservices.model.Department;
 import net.chemodurov.publicservices.repository.DepartmentRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class DepartmentService {
     private final DepartmentRepository repository;
-
-    @Autowired
-    public DepartmentService(DepartmentRepository repository) {
-        this.repository = repository;
-    }
 
     public Department saveDepartment(Department department) {
         return repository.save(department);

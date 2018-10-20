@@ -1,5 +1,6 @@
 package net.chemodurov.publicservices.service;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.chemodurov.publicservices.model.Application;
 import net.chemodurov.publicservices.model.Declarant;
@@ -8,7 +9,6 @@ import net.chemodurov.publicservices.model.StateService;
 import net.chemodurov.publicservices.model.rest.DataFromApplicationPage;
 import net.chemodurov.publicservices.model.rest.DataTable;
 import net.chemodurov.publicservices.repository.PaginatedRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -17,6 +17,7 @@ import java.util.regex.Pattern;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class AppPageService {
     private static final long EIGHTEEN_YEARS_IN_MILSECS = 567993600000L;
     private static final String VALIDATE_OK = "ok";
@@ -24,14 +25,6 @@ public class AppPageService {
     private final DepartmentService departmentService;
     private final StateServiceService stateServiceService;
     private final PaginatedRepository paginatedRepository;
-
-    @Autowired
-    public AppPageService(ApplicationService applicationService, DepartmentService departmentService, StateServiceService stateServiceService, PaginatedRepository paginatedRepository) {
-        this.applicationService = applicationService;
-        this.departmentService = departmentService;
-        this.stateServiceService = stateServiceService;
-        this.paginatedRepository = paginatedRepository;
-    }
 
     public Map<String, String> validateAndSave(DataFromApplicationPage data) {
         Map<String, String> result = validate(data);
